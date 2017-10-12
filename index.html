@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <audio id="audio" src="/audio/$TRACK.mp3" preload="auto"></audio>
+    <time id="time"></time>
+    <script>
+      const audio = document.getElementById("audio");
+      const seekToStart = () => {
+        audio.currentTime = $START_FROM;
+        audio.play();
+        audio.removeEventListener("canplaythrough", seekToStart);
+      };
+      audio.addEventListener("canplaythrough", seekToStart);
+      audio.addEventListener("timeupdate", () => {
+        fetch("/u/" + $USER + "/time/" + audio.currentTime);
+        document.getElementById("time").innerHTML = audio.currentTime;
+      });
+    </script>
+  </body>
+</html>
