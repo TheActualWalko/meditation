@@ -3,7 +3,6 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 
-const DEFAULT_TRACK = 'a';
 const db = {};
 
 fs.readFileSync('db.log', 'utf8')
@@ -19,7 +18,7 @@ app.get('/m/:id', ({params: {id}}, res) => {
   const {track, time} = db[id];
   res.send(
     doc
-      .replace(/\$TRACK/g, track || DEFAULT_TRACK)
+      .replace(/\$TRACK/g, track)
       .replace(/\$START_FROM/g, time)
       .replace(/\$USER/g, id)
   );
@@ -29,7 +28,7 @@ app.get('/u/:id/time/:time', ({params: {id, time}}, res) => {
   db[id].time = time;
   fs.appendFile(
     'db.log', 
-    `\n${id}/${db[id].track || DEFAULT_TRACK}/${time}/${Date.now()}`, 
+    `\n${id}/${db[id].track}/${time}/${Date.now()}`, 
     ()=>res.send('')
   );
 });
