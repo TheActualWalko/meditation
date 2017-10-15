@@ -2,21 +2,25 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/vg-sound-player.css">
+    <link rel="stylesheet" href="/styles/style.css">
   </head>
   <body>
-    <audio id="audio" src="/audio/$TRACK.mp3" preload="auto"></audio>
+    <div class="player" data-vg-sound-player="/audio/$TRACK.mp3" data-vg-title="$TRACK" data-vg-start-from="$START_FROM"></div>
     <time id="time"></time>
+    <script src="/scripts/jquery.js"></script>
+    <script src="/scripts/vg-sound-player.js"></script>
     <script>
-      const audio = document.getElementById("audio");
-      const seekToStart = () => {
-        audio.currentTime = $START_FROM;
-        audio.play();
-        audio.removeEventListener("canplaythrough", seekToStart);
-      };
-      audio.addEventListener("canplaythrough", seekToStart);
-      audio.addEventListener("timeupdate", () => {
-        fetch("/u/" + $USER + "/time/" + audio.currentTime);
-        document.getElementById("time").innerHTML = audio.currentTime;
+      $(function() {
+        const audio = $(".player audio")[0];
+        const seekToStart = () => {
+          audio.currentTime = $START_FROM;
+          audio.removeEventListener("canplaythrough", seekToStart);
+        };
+        audio.addEventListener("canplaythrough", seekToStart);
+        audio.addEventListener("timeupdate", () => {
+          fetch("/u/" + $USER + "/time/" + audio.currentTime);
+        });
       });
     </script>
   </body>
