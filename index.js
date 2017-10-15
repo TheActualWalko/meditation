@@ -5,7 +5,7 @@ const app = express();
 
 const db = {};
 
-fs.writeFileSync('db.log', '123/a/60/0\n456/b/21/0', 'utf8');
+fs.writeFileSync('db.log', '123/track-one/60/0\n456/track-two/21/0', 'utf8');
 
 fs.readFileSync('db.log', 'utf8')
   .split('\n')
